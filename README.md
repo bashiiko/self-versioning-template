@@ -1,0 +1,1 @@
+# self-versioning-template
