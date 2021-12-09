@@ -1,0 +1,28 @@
+name: Github Update ReadMe
+on:
+  push:
+    branches:
+      - '**'
+jobs:
+  Update-ReadMe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install gnuplot
+        run: brew install gnuplot
+      - name: Create commit graph
+        run: bash ./.github/workflows/create_commit_graph.sh
+      - name: Run script
+        run: bash ./.github/workflows/update_readme.sh
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "READMEを自動更新"
+          git push
+      - name: Add toc to readme
+        uses: technote-space/toc-generator@v2
